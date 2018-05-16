@@ -9,3 +9,6 @@ convert: boot.bin
 clean:
 	rm boot.bin
 	rm boot.vdi
+
+qemu:
+	qemu-system-x86_64 -drive format=raw,file=boot.bin
