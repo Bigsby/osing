@@ -1,1 +1,7 @@
 https://wiki.osdev.org/Babystep1
+
+To create .bin and .vdi:
+	$ make
+
+To clean
+	$ make clean
