@@ -1,1 +1,8 @@
 This repo will host my experiences in Operating Systems creation using strictly CLI tools.
+
+TOOLS
+- Vim - Code Editor - https://www.vim.org/
+- Nasm - Assembly Compiler - https://www.nasm.us/
+- GCC - Higher-lever language (C) Compiler - https://gcc.gnu.org/
+- QEMU - Virtual Machine Emulator - https://www.qemu.org/
+- VirtualBox - Virtual Machine Host - https://www.virtualbox.org/
