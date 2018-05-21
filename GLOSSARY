@@ -1,0 +1,1 @@
+BIOS - Basic Input/Output System. The (non-volatile) software the first runs when a computer is turned on. Besides and after some hardware checks, chooses the booting devices (USB pen, Hard Disk, etc.) and sends its code to the CPU.
