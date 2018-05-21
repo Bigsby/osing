@@ -1,4 +1,6 @@
-all: assemble convert
+all: build qemu
+
+build: assemble convert
 
 assemble: boot.asm
 	nasm boot.asm -f bin -o boot.bin
@@ -11,4 +13,4 @@ clean:
 	rm boot.vdi
 
 qemu:
-	qemu-system-x86_64 -drive format=raw,file=boot.bin
+	qemu-system-x86_64 -drive format=raw,file=boot.bin -curses
