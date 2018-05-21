@@ -42,9 +42,9 @@ Every thing that is communicated to a from a computer is nothing more than seque
 the decimal convertion would be:
 
 ```
-       1                0                 1                 1                 1          (binary, base 2)
-2<sup>4</sup>x1 + 2<sup>3</sup>x0 + 2<sup>2</sup>x1 + 2<sup>1</sup>x1 + 2<sup>0</sup>x1
-     16x1         +    8x0        +      4x1        +      2x1        +      1x1        = 23  (decinal, base 10)
+    1       0       1       1       1       (binary, base 2)
+2^4x1 + 2^3x0 + 2^2x1 + 2^1x1 + 2^0x1
+ 16x1 +   8x0 +   4x1 +   2x1 +   1x1 = 23  (decinal, base 10)
 ```
 
 #### Physics
