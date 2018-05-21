@@ -1,8 +1,10 @@
 This repo will host my experiences in Operating Systems creation using strictly CLI tools.
 
 TOOLS
+- DHex - Hexadecimal file editor - http://www.dettus.net/dhex/
+- QEMU - Virtual Machine Emulator - https://www.qemu.org/
 - Vim - Code Editor - https://www.vim.org/
+- GNU Assembler (GAS) - http://tigcc.ticalc.org/doc/gnuasm.html
 - Nasm - Assembly Compiler - https://www.nasm.us/
 - GCC - Higher-lever language (C) Compiler - https://gcc.gnu.org/
-- QEMU - Virtual Machine Emulator - https://www.qemu.org/
 - VirtualBox - Virtual Machine Host - https://www.virtualbox.org/
