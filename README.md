@@ -93,11 +93,11 @@ And since our (more common) decimal system only has 10 digits, 6 letters form *A
 ```
 the hexadecimal convertion could be, if right to left:
 ```
-(     0       0       0       1 ) x 16 + (     1       0       1       1 )
+(     0       0       0       1 ) x 16 + (     1       0       1       1 )     => binary      =>  base 2
 ( 2^3x0 + 2^2x0 + 2^1x0 + 2^0x1 ) x 16 + ( 2^3x1 + 2^2x0 + 2^1x1 + 2^0x1 )
+                1              ( x 16 )                11                      => decimal,    =>  base 10
                 1              ( x 16 )                 B
-
-                                1B
+                                1B                                             => hexadecimal =>  base 16
 ```
 
 > To avoid confguion with other based values (e.g., decimal, binary, etc.), hexadecimal values are, usually, either prefixed with *0x* or sufixed with *h*. The number above would be written either:
