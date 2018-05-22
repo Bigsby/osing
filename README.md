@@ -97,9 +97,9 @@ And since our (more common) decimal system only has 10 digits, 6 letters form *A
 
 A (normal, everyday) computer is, in essence, a very simple machine that can only be told to do one thing. As such, when a computer starts or is rebooted, it can only go to a pre-defined place that will tell it what to do. This place is called **B**asic **I**nput/**O**utput **S**ystem. The *BIOS* is a software that is installed in the computer's **R**ead **O**nly **M**emory. 
 
-The *BIOS* function, among other things out of the scope of this story (maybe I'll go there, someday), is to, after some hardware checks, choose from what device the computer should boot: there can be only one. There might be many bootable devices connected to the computer (e.g., floppy-disk, hard disk, USB stick, etc.) but, by whatever configuration, the *BIOS* can only choose what to boot. Normally, for a device to be chosen it needs 2 things:
-- To be registered/configured in *BIOS* boot order;
-- To be identifiable as bootable: on x86 architecture, this means the 511th Byte of it's memory has the value of 0xAA of it's memory and the 512th has the value of 0x55.
-
-
-After a device is chosen, the boot sector on that device is loaded into memory and then sent for execusion to the CPU.
+The *BIOS* function, among other things out of the scope of this story (maybe I'll go there, someday), is, after some hardware checks, to: 
+- choose from what device the computer should boot: there can be only one. There might be many bootable devices connected to the computer (e.g., floppy-disk, hard disk, USB stick, etc.) but, by whatever configuration, the *BIOS* can only choose what to boot. Normally, for a device to be chosen it needs 2 things:
+-- To be registered/configured in *BIOS* boot order;
+-- To be identifiable as bootable, on x86 architecture, this means the 511th Byte of it's memory has the value of 0xAA of it's memory and the 512th has the value of 0x55.
+- after a device is chosen, the boot sector on that device is loaded into the computer's **R**andom **A**ccess **M**emory and then sent for execusion to the computer's **C**entral **P**rocessing **U**nit.
+- from here on, the *BIOS* is the in-between the computer computer components and the programs (softwares) that run on the computer.
