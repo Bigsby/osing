@@ -221,7 +221,7 @@ Let's create a sector that is, recognizably bootable. For this:
     Booting from Hard Disk...
     _
    ```
-   Doing notthing with a none-blinking cursor.
+   Doing nothing with a none-blinking cursor.
 
 This is as close to nothing a running kernel (or an operating system) can be.
 
