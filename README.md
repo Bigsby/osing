@@ -1,14 +1,14 @@
 # Zero-based Kernel
 
-I've always been interested in how things work and, when working as a developer, what is done for me, that "simplifies" my job, by tools and frameworks. Here I'll share findings and tests in the process of understanding the whole kernel (Operating System) business.
+I've always been interested in how things work and, when working as a developer, what is done for me, that "simplifies" my job, by tools and frameworks. Here, I'll share findings and tests in the process of understanding the whole kernel (Operating System) business.
 
 ## The Story
 
 ### 0.0 - Intro
 
-I, mostly, work in very high level language and environemnts. For instance, I, mostly, make a living programming for [.Net](https://www.microsoft.com/net) in [C#](https://docs.microsoft.com/en-us/dotnet/csharp/). But even in *.Net* there are lower levels as I took the time to [find out](http://babil.bigsbyspot.org/). Eventually and inevitably, I would find myself all the way down to kerneling and operating systems. 
+I, mostly, work in very high level languages and environments. For instance, I, mostly, make a living programming for [.Net](https://www.microsoft.com/net) in [C#](https://docs.microsoft.com/en-us/dotnet/csharp/). But even in *.Net* there are lower levels as I took the time to [find out](http://babil.bigsbyspot.org/). Eventually and inevitably, I would find myself all the way down to kerneling and operating systems. 
 
-First I found [this great tutorial](https://github.com/cfenollosa/os-tutorial); and, in it, the reference to [OSDev.org](https://www.osdev.org/).
+First I found [this great tutorial](https://github.com/cfenollosa/os-tutorial); and, in it, the reference to the great online group [OSDev.org](https://www.osdev.org/).
 
 Then, I found Eric Steven Raymond's great book, from 2003, [The Art of Unix Programming](http://www.catb.org/esr/writings/taoup/html/index.html) ([epub](https://github.com/bjut-hz/E-Books/blob/master/linux/Eric%20S.%20Raymond-The%20Art%20of%20UNIX%20Programming-Addison-Wesley%20Professional%20%282003%29.epub)).
 
@@ -34,17 +34,17 @@ I work, almost exclusively, on Windows environments, but want to have the lowest
 
 We, intelligent humans, learn from a young age to, do math in base 10, i.e., having 10 distinct digits. The computer is a very basic and limitted machine that "knows" very little. In fact, it only knows two things: 0 (zeros) and 1 (ones), i.e., 2 digits, i.e., it works in base 2.
 
-Every thing that is communicated to a from a computer is nothing more than sequences of *zeros* and *ones*. This means the computer can not count *1, 2, 3, 4, ...*, it has to count *1, 10, 11, 100, ...*., i.e., where the *zeros* and *ones* represent powers of 2, from right to left (but not mandatorily ...). For the binary value:
+Every thing that is communicated to and from a computer is nothing more than sequences of *zeros* and *ones*. This means the computer can not count *1, 2, 3, 4, ...*, it has to count *1, 10, 11, 100, ...*., i.e., where the *zeros* and *ones* represent powers of 2, from right to left (but not mandatorily ...). For the binary value:
 ```
 10111
 ```
-the decimal convertion could be, if right to left:
+the decimal convertion would be, if right to left:
 ```
     1       1       0       1       1       (binary, base 2)
 2^4x1 + 2^3x1 + 2^2x0 + 2^1x1 + 2^0x1
  16x1 +   8x1 +   4x0 +   2x1 +   1x1 = 27  (decinal, base 10)
 ```
-> In many (there I say most) programming languages, *^* symbol mean *powered by*
+> In many (there I say most) programming languages, the symbol *^* means *powered by*
 
 Playing with different base arithmetics is fun and a great exercise. You''ll find out why programmers mix up Christmas and Halloween. It's because:
 ```
@@ -56,22 +56,21 @@ I.e., 25 in base 10 is equal to 31 in base 8.
 #### Physics
 
 The only things in physics relevant to this story are:
-- In storage, a *zero* and a *one* are distinguished by, for isntance but depending on the memory type, the existense or electrical current in the place where that position is.
-- In communication (e.g., to and from a network device, or to and from CPU), there are 3 voltages corresponding to each of the communicating states: *no data*, *zero* and *one*,
+- In storage, *zero* and *one* are distinguished by, for instance depending on the memory type, the existense of electrical current in the place where that position is.
+- In communication (e.g., to and from a network device, or to and from CPU), there are 3 distinct voltages corresponding to each of the communicating states: *no data*, *zero* and *one*,
 
-This means that, in terms of (any) memory, there will always be a value of either *zero* or *one*, i.e., there is no *empty* value. In terms of communication, from whatever device (including memory) one needs to be very conscient of how hard it might be to know if all data (the whole sequence of *zero*s and *one*s) has arrived already.
+This means that, in terms of (any) memory, there will always be a value of either *zero* or *one*, i.e., there is no *empty* value. In terms of communication, from whatever device (including memory) one needs to be very conscient of how hard it might be to know if all data (the whole sequence of *zero*s and *one*s) has arrived already. Protocols need to be very well defined to mitigate either data cropping or infinite ways.
 
 #### Units,Conventions
 
 The unit of computer is the **bit**,  that is either a *zero* or a *one*.
 
-Notation is one of the great struggles of humanity: writing things in a way that is efficient to store and immediate to read. Although storing *zero*s and *one*s is what is physically optimial (not entering the discussion otherwise) reading and writing sequences of *zero*s and *one*s gets very confusing and error prone real fast. After some back and forth, [ISO/IEC 2382-1:1993](https://www.iso.org/obp/ui/#iso:std:iso-iec:2382:-1:ed-3:v1:en) defined 8 bits as the minimal communicable set of data and it's called a **Byte**. I.e.:
+Notation is one of the great struggles of humanity: writing things in a way that is efficient to store and immediate to read. Although storing *zero*s and *one*s is what is physically optimial (not entering the discussion otherwise here) reading and writing sequences of *zero*s and *one*s gets very confusing and error prone really fast, when done mannually. After some back and forth, [ISO/IEC 2382-1:1993](https://www.iso.org/obp/ui/#iso:std:iso-iec:2382:-1:ed-3:v1:en) defined 8 *bits* as the minimal communicable set of data and it's called a **Byte**, i.e.:
 ```
 1 Byte = 8 bit
-1B = 1b
 ```
 
-This means 1 Byte can represent the values from 0 (zero), i.e., all bits as *zero*; all the way to 255, when all bits are *one*:
+This means 1 *Byte* can represent the values from 0 (zero), i.e., all bits as *zero*; all the way to 255, when all bits are *one*:
 ```
 2^0 + 2^1 + 2^2 + 2^3 + 2^4 + 2^5 + 2^6 + 2^7
   1 +   2 +   4 +   8 +  16 +  32 +  64 + 128 = 255
@@ -82,7 +81,7 @@ I.e., 256 distinct values.
 
 > There are no fractions or decimal points in computer memory or communication.
 
-Since writing values, for instance, in a memory matrix that can have 1 to 3 digits is not that convinient (back in the day, full memories were dumped to printers understand what was going on, i.e., debug) and not so easy to memorize, hexadecimal, although not at all mandatory, became a standard for representing *Bytes* where 2 hexadecimal digits represent 1 single Byte because:
+Since reading values, for instance, in a memory matrix that can have 1 to 3 digits is not that convinient (back in the day, full memories were dumped to printers to understand what was going on, i.e., debug) and not so easy to memorize, hexadecimal, although not at all mandatory, became a standard for representing *Bytes* where 2 hexadecimal digits represent 1 *Byte* because:
 ```
 16 * 16 = 256
 ```
@@ -91,7 +90,7 @@ And since our (more common) decimal system only has 10 digits, 6 letters form *A
 ```
 0001 1011
 ```
-the hexadecimal convertion could be, if right to left:
+And the hexadecimal convertion could be, if right to left:
 ```
 (     0       0       0       1 ) x 16 + (     1       0       1       1 )     => binary      =>  base 2
 ( 2^3x0 + 2^2x0 + 2^1x0 + 2^0x1 ) x 16 + ( 2^3x1 + 2^2x0 + 2^1x1 + 2^0x1 )
@@ -122,8 +121,8 @@ A (normal, everyday) computer is, in essence, a very simple machine that can onl
 
 The *BIOS* function, among other things out of the scope of this story (maybe I'll go there, someday), is, after some hardware checks, to: 
 - choose from what device the computer should boot from: there can be only one. There might be many bootable devices connected to the computer (e.g., floppy-disk, hard disk, USB stick, etc.) but, by whatever configuration, the *BIOS* can only choose one to boot from. Normally, for a device to be chosen it needs 2 things:
--- To be registered/configured in *BIOS* boot order;
--- To be identifiable as bootable. On x86 architecture, this means the device has the **magic number**, i.e., the Byte in position 510 of it's memory has the value of 0x55 of it's memory and the one in position 511 has the value of 0xAA. Note that indexes (like memory) is zero-based, i.e., the first position is index *0* (zero), the second *1*, and so on.
+  - To be registered/configured in *BIOS* boot order;
+  - To be identifiable as bootable. On *x86* architecture, this means the device has the **magic number**, i.e., the Byte in position 510 of it's memory has the value of 0x55 of it's memory and the one in position 511 has the value of 0xAA. Note that indexes (like memory) is zero-based, i.e., the first position is index *0* (zero), the second *1*, and so on.
 - after a device is chosen, the boot sector on that device is loaded into the computer's **R**andom **A**ccess **M**emory and then sent for execusion to the computer's **C**entral **P**rocessing **U**nit, from it's first *Byte* onwards.
 - from here on, the *BIOS* is the in-between the computer components and the programs (softwares) that run on the computer.
 
