@@ -100,7 +100,7 @@ the hexadecimal convertion could be, if right to left:
                                 1B                                             => hexadecimal =>  base 16
 ```
 
-> To avoid confguion with other based values (e.g., decimal, binary, etc.), hexadecimal values are, usually, either prefixed with *0x* or sufixed with *h*. The number above would be written either:
+To avoid confusion with other based values (e.g., decimal, binary, etc.), hexadecimal values are, usually, either prefixed with *0x* or sufixed with *h*. The number above would be written either:
 ```
 0x1B
 ```
@@ -110,6 +110,8 @@ or
 ```
 
 > *Hexadecimal* notation means nothing to the computer. It's strictly a human readabilty helper notation, thus, the irrelevance of casing.
+
+More units will be used, further on, that the computer is aware of but, since it is only aware of them because we tell it to be aware, we'll address them then.
 
 
 ### 1.0 Before the Light
@@ -121,7 +123,52 @@ A (normal, everyday) computer is, in essence, a very simple machine that can onl
 The *BIOS* function, among other things out of the scope of this story (maybe I'll go there, someday), is, after some hardware checks, to: 
 - choose from what device the computer should boot from: there can be only one. There might be many bootable devices connected to the computer (e.g., floppy-disk, hard disk, USB stick, etc.) but, by whatever configuration, the *BIOS* can only choose one to boot from. Normally, for a device to be chosen it needs 2 things:
 -- To be registered/configured in *BIOS* boot order;
--- To be identifiable as bootable. On x86 architecture, this means the 511th Byte of it's memory has the value of 0x55 of it's memory and the 512th has the value of 0xAA.
-- after a device is chosen, the boot sector on that device is loaded into the computer's **R**andom **A**ccess **M**emory and then sent for execusion to the computer's **C**entral **P**rocessing **U**nit.
+-- To be identifiable as bootable. On x86 architecture, this means the device has the **magic number**, i.e., the Byte in position 510 of it's memory has the value of 0x55 of it's memory and the one in position 511 has the value of 0xAA. Note that indexes (like memory) is zero-based, i.e., the first position is index *0* (zero), the second *1*, and so on.
+- after a device is chosen, the boot sector on that device is loaded into the computer's **R**andom **A**ccess **M**emory and then sent for execusion to the computer's **C**entral **P**rocessing **U**nit, from it's first *Byte* onwards.
 - from here on, the *BIOS* is the in-between the computer components and the programs (softwares) that run on the computer.
+
+### 1.1 Empty kernel
+
+#### No magic
+
+A boot sector is, then, a device whose 510 and 511 memory indexes return 0x55 and 0xAA. But what happens if no magic number is provided? Let's try it.
+
+1. Create a file, in *Bash*:
+   ```bash
+   $ touch os1.1nomagic.hex
+   ```
+2. Fill it up with 512 *zero*s in *DHex*, until position *0x1FF*, running the command in *Bash*:
+   ```bash
+   $ dhex os1.1nomagic.hex
+   ```
+   And then in *DHex*:
+   ```
+[     1E0/     200][os1.1nomagic.hex]
+       0     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+      20     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+      40     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+      60     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+      80     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+      A0     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+      C0     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+      E0     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+     100     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+     120     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+     140     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+     160     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+     180     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+     1A0     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+     1C0     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+     1E0     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+     200
+   ```
+   
+3. Use it in *QEMU*, running the command in *Bash*: 
+   ```bash
+   $ qemu-system-x86_64 -curses -drive format=raw,file=os1.1nomagic.hex
+   ```
+   The result, after a bunch of *QEMU* initializations, should be:
+   ```
+   No bootable device.
+   ```
 
