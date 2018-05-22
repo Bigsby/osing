@@ -123,4 +123,5 @@ The *BIOS* function, among other things out of the scope of this story (maybe I'
 -- To be registered/configured in *BIOS* boot order;
 -- To be identifiable as bootable. On x86 architecture, this means the 511th Byte of it's memory has the value of 0x55 of it's memory and the 512th has the value of 0xAA.
 - after a device is chosen, the boot sector on that device is loaded into the computer's **R**andom **A**ccess **M**emory and then sent for execusion to the computer's **C**entral **P**rocessing **U**nit.
-- from here on, the *BIOS* is the in-between the computer computer components and the programs (softwares) that run on the computer.
+- from here on, the *BIOS* is the in-between the computer components and the programs (softwares) that run on the computer.
+
