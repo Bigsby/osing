@@ -87,7 +87,7 @@ Since writing values, for instance, in a memory matrix that can have 1 to 3 digi
 16 * 16 = 256
 ```
 
-And since our (more common) decimal system only has 10 digits, 6 letters form *A* (or *a*) to *F* (or *f*) are used as the remaining digits. The decimal *23*, from before, would be represented like so:
+And since our (more common) decimal system only has 10 digits, 6 letters form *A* (or *a*) to *F* (or *f*) are used as the remaining digits. The decimal *27*, from before, would be represented like so:
 ```
 0001 1011
 ```
