@@ -127,15 +127,15 @@ The *BIOS* function, among other things out of the scope of this story (maybe I'
 - after a device is chosen, the boot sector on that device is loaded into the computer's **R**andom **A**ccess **M**emory and then sent for execusion to the computer's **C**entral **P**rocessing **U**nit, from it's first *Byte* onwards.
 - from here on, the *BIOS* is the in-between the computer components and the programs (softwares) that run on the computer.
 
-### 1.1 Empty kernel
+### 1.1 Empty boot sector
 
-#### No magic
+#### 1.1.1 No magic
 
 A boot sector is, then, a device whose 510 and 511 memory indexes return 0x55 and 0xAA. But what happens if no magic number is provided? Let's try it.
 
 1. Create a file, in *Bash*:
    ```bash
-   $ touch os1.1nomagic.hex
+   $ touch os1.1.1nomagic.hex
    ```
 2. Fill it up with 512 *zero*s in *DHex*, until position *0x1FF*, running the command in *Bash*:
    ```bash
@@ -143,7 +143,7 @@ A boot sector is, then, a device whose 510 and 511 memory indexes return 0x55 an
    ```
    And then in *DHex*:
    ```
-[     1E0/     200][os1.1nomagic.hex]
+   [     1E0/     200][os1.1.1nomagic.hex]
        0     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
       20     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
       40     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
@@ -165,10 +165,63 @@ A boot sector is, then, a device whose 510 and 511 memory indexes return 0x55 an
    
 3. Use it in *QEMU*, running the command in *Bash*: 
    ```bash
-   $ qemu-system-x86_64 -curses -drive format=raw,file=os1.1nomagic.hex
+   $ qemu-system-x86_64 -curses -drive format=raw,file=os1.1.1nomagic.hex
    ```
-   The result, after a bunch of *QEMU* initializations, should be:
+   The result should be:
+   ```
+   Booting from Hard Disk...
+   Boot failed: not a bootable disk
+   ```
+   *QEMU* tries really hard to make it work but, in the end:
    ```
    No bootable device.
    ```
+
+> To exit *QEMU* press *Esc+2* to go to *QEMU* console and the enter *q* to quit.
+
+#### 1.1.2 Bootable sector
+
+Let's create a sector that is, recognizably bootable. For this:
+
+1. Copy/duplicate *os1.1nomagic.hex*, running in *Bash*:
+   ```bash
+   $ cp os1.1.1nomagic.hex os1.1.2bootable.hex
+   ```
+2. Edit the new file and set *0x55* and *0xAA* to the last bytes, running in *Bash*":
+   ```bash
+   $ dhex os1.1.2bootable.hex
+   ```
+   And, then, in *DHex*:
+   ```
+   ─[     200/     200]───────────────────────────────────────────────────────────────────────────────────────────────────────────[os1.1.2bootable.hex]─
+       0     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+      20     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+      40     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+      60     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+      80     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+      A0     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+      C0     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+      E0     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+     100     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+     120     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+     140     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+     160     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+     180     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+     1A0     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+     1C0     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00      ................................
+     1E0     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  00 00 00 00 00 00 55 aa      ..............................U.
+     200
+   ```
+3. Use it in *QEMU*, running the command in *Bash*: 
+   ```bash
+   $ qemu-system-x86_64 -curses -drive format=raw,file=os1.1.2bootable.hex
+   ```
+   The result should be:
+   ```
+    Booting from Hard Disk...
+    _
+   ```
+   Doing notthing with a none-blinking cursor.
+
+This is as close to nothing a running kernel (or an operating system) can be.
 
