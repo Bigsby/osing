@@ -1,6 +1,6 @@
-mov ax, 0x410e
+mov ax, 0x0e41
 int 0x10
 
-jump $
+jmp $
 times 510-($-$$) db 0
 dw 0xaa55
